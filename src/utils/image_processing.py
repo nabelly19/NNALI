@@ -80,6 +80,10 @@ def dilate_image(img, kernel_size=(43, 43)):
     return dilated_img
 
 
+def resize_image(img, new_size=(128, 128)):
+    return cv.resize(img, new_size)
+
+
 # filepath = "data\Img\\0\img001-001.png"
 
 # image = cv.imread(filepath)
