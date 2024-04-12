@@ -12,7 +12,7 @@ exists = os.path.exists(model_path)
 model = models.load_model(model_path) \
     if exists \
     else models.Sequential([
-        # layers.Resizing(120, 90),
+        layers.Resizing(120, 90),
         layers.Rescaling(1.0/255),
         # layers.RandomFlip("horizontal_and_vertical"),
         layers.Conv2D(32, (7, 7), 
