@@ -28,12 +28,12 @@ model = models.load_model(model_path) \
         layers.Flatten(),
         layers.BatchNormalization(),
         layers.GaussianNoise(0.5),
-        layers.Dense(128,
+        layers.Dense(64,
             activation = 'relu',
             kernel_initializer = initializers.RandomNormal()
         ),
         layers.Dropout(0.5),
-        layers.Dense(256,
+        layers.Dense(128,
             activation = 'relu',
             kernel_initializer = initializers.RandomNormal()
         ),

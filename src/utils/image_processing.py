@@ -80,35 +80,82 @@ def dilate_image(img, kernel_size=(43, 43)):
     return dilated_img
 
 
-def resize_image(img, new_size=(128, 128)):
+import cv2 as cv
+
+
+def resize_image(img, new_size=(120, 90)):
+    """
+    Resize an image to a new size.
+
+    Parameters
+    ----------
+    img : numpy.ndarray
+        The input image.
+    new_size : tuple, optional
+        The new size to resize the image to (default is (128, 128)).
+
+    Returns
+    -------
+    numpy.ndarray
+        The resized image.
+    """
     return cv.resize(img, new_size)
 
 
-def find(img, x, y):
-    x0 = x
-    xf = x
-    y0 = y
-    yf = y
-    queue = [
-    (x + 1, y),
-    (x - 1, y),
-    (x, y + 1),
-    (x, y - 1)
-    ]
-    while len(queue) > 0:
-        x, y = queue.pop()
-        if y < 0 or y >= len(img):
+def flood_fill(img, x, y):
+    """
+    Perform flood fill operation on an image.
+
+    Parameters
+    ----------
+    img : numpy.ndarray
+        The input image.
+    x : int
+        The x-coordinate of the seed point.
+    y : int
+        The y-coordinate of the seed point.
+
+    Returns
+    -------
+    tuple
+        A tuple containing the coordinates of the bounding box surrounding the filled area.
+    """
+    max_y, max_x = img.shape
+    color = img[y][x]
+
+    x0 = xf = x
+    y0 = yf = y
+
+    if not (0 <= y < max_y) or not (0 <= x < max_x):
+        return None
+
+    queue = [(x, y)]
+    visited = []
+
+    while queue:
+        curr_x, curr_y = queue.pop()
+
+        if (0 > curr_y or curr_y >= max_y) or (0 > curr_x or curr_x >= max_x):
             continue
-        row = img[y]
 
-# filepath = "data\Img\\0\img001-001.png"
+        if (curr_x, curr_y) in visited:
+            continue
 
-# image = cv.imread(filepath)
-# image = binary(image, dilate=True)
-# show(image)
-# image = cv.imread(filepath)
-# image = binary(image)
-# show(image)
-# image = cv.imread(filepath)
-# image = binary(image, erode=True)
-# show(image)
+        visited.append((curr_x, curr_y))
+
+        if color != img[curr_y][curr_x]:
+            continue
+
+        x0 = min(x0, curr_x)
+        xf = max(xf, curr_x)
+
+        y0 = min(y0, curr_y)
+        yf = max(yf, curr_y)
+
+        queue.append((curr_x + 1, curr_y))
+        queue.append((curr_x - 1, curr_y))
+        queue.append((curr_x, curr_y + 1))
+        queue.append((curr_x, curr_y - 1))
+
+    return ((x0, y0), (xf, yf))
+
