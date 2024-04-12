@@ -12,9 +12,9 @@ exists = os.path.exists(model_path)
 model = models.load_model(model_path) \
     if exists \
     else models.Sequential([
-        layers.Resizing(120, 90),
+        # layers.Resizing(120, 90),
         layers.Rescaling(1.0/255),
-        layers.RandomFlip("horizontal_and_vertical"),
+        # layers.RandomFlip("horizontal_and_vertical"),
         layers.Conv2D(32, (7, 7), 
             activation = 'relu',
             kernel_initializer = initializers.RandomNormal()              
@@ -38,7 +38,7 @@ model = models.load_model(model_path) \
             kernel_initializer = initializers.RandomNormal()
         ),
         layers.Dense(62,
-            activation = 'sigmoid',
+            activation = 'softmax',
             kernel_initializer = initializers.RandomNormal()
         )
     ])
@@ -55,7 +55,7 @@ else:
     )
 
 train = utils.image_dataset_from_directory(
-    "data/img",
+    "data\\resize",
     validation_split= 0.2,
     subset= "training",
     seed= 123,
@@ -65,7 +65,7 @@ train = utils.image_dataset_from_directory(
  )
 
 test = utils.image_dataset_from_directory(
-    "data/img",
+    "data\\resize",
     validation_split= 0.2,
     subset= "validation",
     seed= 123,
