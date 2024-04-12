@@ -12,9 +12,9 @@ exists = os.path.exists(model_path)
 model = models.load_model(model_path) \
     if exists \
     else models.Sequential([
-        layers.Resizing(120, 90),
+        layers.Resizing(35, 26),
         layers.Rescaling(1.0/255),
-        layers.RandomFlip("horizontal_and_vertical"),
+        layers.RandomRotation((-0.1, 0.1)),
         layers.Conv2D(32, (7, 7), 
             activation = 'relu',
             kernel_initializer = initializers.RandomNormal()              
@@ -32,13 +32,21 @@ model = models.load_model(model_path) \
             activation = 'relu',
             kernel_initializer = initializers.RandomNormal()
         ),
+        layers.Dense(32,
+            activation = 'gelu',
+            kernel_initializer = initializers.RandomNormal()
+        ),
+        layers.Dense(128,
+            activation = 'relu',
+            kernel_initializer = initializers.RandomNormal()
+        ),
         layers.Dropout(0.5),
         layers.Dense(256,
             activation = 'relu',
             kernel_initializer = initializers.RandomNormal()
         ),
         layers.Dense(62,
-            activation = 'sigmoid',
+            activation = 'softmax',
             kernel_initializer = initializers.RandomNormal()
         )
     ])
@@ -48,29 +56,30 @@ if exists:
 else:
     model.compile(
         optimizer = optimizers.Adam(
-            learning_rate = learning_rate
+            learning_rate = learning_rate,
+            epsilon=1e-09
         ),
         loss = losses.SparseCategoricalCrossentropy(),
         metrics = [ "accuracy" ]
     )
 
 train = utils.image_dataset_from_directory(
-    "data/img",
+    "data/filters",
     validation_split= 0.2,
     subset= "training",
     seed= 123,
     shuffle= True,
-    image_size= (128, 128),
+    image_size= (1200, 900),
     batch_size= batch_size
  )
 
 test = utils.image_dataset_from_directory(
-    "data/img",
+    "data/filters",
     validation_split= 0.2,
     subset= "validation",
     seed= 123,
     shuffle= True,
-    image_size= (128, 128),
+    image_size= (1200, 900),
     batch_size= batch_size
 )
 model.fit(train,
