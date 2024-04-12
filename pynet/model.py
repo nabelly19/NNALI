@@ -6,7 +6,7 @@ epochs = 300
 batch_size = 32
 patience = 30
 learning_rate = 0.0001
-model_path = 'checkpoints/model.keras'
+model_path = 'pynet/checkpoints/model.keras'
 exists = os.path.exists(model_path)
 
 model = models.load_model(model_path) \
