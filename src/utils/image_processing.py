@@ -80,6 +80,27 @@ def dilate_image(img, kernel_size=(43, 43)):
     return dilated_img
 
 
+def resize_image(img, new_size=(128, 128)):
+    return cv.resize(img, new_size)
+
+
+def find(img, x, y):
+    x0 = x
+    xf = x
+    y0 = y
+    yf = y
+    queue = [
+    (x + 1, y),
+    (x - 1, y),
+    (x, y + 1),
+    (x, y - 1)
+    ]
+    while len(queue) > 0:
+        x, y = queue.pop()
+        if y < 0 or y >= len(img):
+            continue
+        row = img[y]
+
 # filepath = "data\Img\\0\img001-001.png"
 
 # image = cv.imread(filepath)
