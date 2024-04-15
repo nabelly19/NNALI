@@ -89,3 +89,31 @@ def generate_hash(data):
     """
     hash_object = hashlib.md5(data)
     return hash_object.hexdigest()
+
+import os
+
+
+def create_image_directories(base_dir):
+    """
+    Create directories for digits, uppercase letters, and lowercase letters (followed by '2').
+
+    Parameters
+    ----------
+    base_dir : str
+        The base directory where the subdirectories will be created.
+
+    Returns
+    -------
+    None
+    """
+    digits = [str(i) for i in range(10)]
+    letters_uppercase = [chr(i) for i in range(65, 91)]
+
+    for directory in digits + letters_uppercase:
+        dir_path = os.path.join(base_dir, directory)
+        os.makedirs(dir_path, exist_ok=True)
+
+    for letter in letters_uppercase:
+        dir_path = os.path.join(base_dir, letter + '2')
+        os.makedirs(dir_path, exist_ok=True)
+
