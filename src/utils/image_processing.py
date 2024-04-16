@@ -79,7 +79,7 @@ def dilate_image(img, kernel_size=(43, 43)):
     return dilated_img
 
 
-def resize_image(img, new_size=(120, 90)):
+def resize_image(img, new_size=(90, 120)):
     """
     Resize an image to a new size.
 
@@ -88,7 +88,7 @@ def resize_image(img, new_size=(120, 90)):
     img : numpy.ndarray
         The input image.
     new_size : tuple, optional
-        The new size to resize the image to (default is (128, 128)).
+        The new size to resize the image to (default is (90, 120)).
 
     Returns
     -------
@@ -214,3 +214,6 @@ def save_images(imgs, target_directory):
         target_filepath = generate_hashed_filename(img, target_directory)
         if not cv.imwrite(target_filepath, img):
             print("Failed to save image.")
+
+def invert_mask(img):
+    return cv.bitwise_not(img)

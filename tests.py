@@ -1,19 +1,15 @@
-from src.utils import *
-
-letters = get_letters("data\\teste.png")
-
-
-for i in range(len(letters)):
-    letters[i] = resize_image(letters[i])
-save_images(letters, "data\letters")
-
+import src.predict as predict
 from tensorflow.keras import models
 
-model_path = "pynet\checkpoints\good_model\model9491.keras"
+from src.utils import *
+
+model_path = "pynet\checkpoints\good_model\model9292(95ms).keras"
 model = models.load_model(model_path)
+# print(predict.run("data\\teste2.png", model))
+# print(predict.run("data\\teste.png", model))
+# print(predict.run("data\inquisicao_crop_edit.png", model, save=True))
+print(predict.run("data\inquisicao_crop.png", model, save=True))
 
-filename = "data\letters\8937997be3e5cb13fb26dea55abba412.jpg"
-image = cv.imread(filename)
-
-image_predict = binary(image)
-print(model.predict(image_predict))
+# image = cv.imread("data\inquisicao_crop_edit.png")
+# image = binary(image)
+# show(image)
