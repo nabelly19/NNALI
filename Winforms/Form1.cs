@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -7,6 +6,8 @@ using System.Windows.Forms;
 
 public partial class WhiteBoard : Form
 {
+    public static List<ScreenObject> Objs { get; private set; } = new();
+    public static void AddObject(ScreenObject obj) => Objs.Add(obj);
     private PictureBox pb = new PictureBox { Dock = DockStyle.Fill };
     private Graphics g = null;
     private Bitmap b = null;
@@ -15,20 +16,20 @@ public partial class WhiteBoard : Form
     private bool drawing = false;
     private bool eraserMode = false;
     private int frameCounter = 0;
-    private int penSize = 30;
+    private int penSize = 20;
     private Brush brush = new SolidBrush(Color.Black);
     private Stack<Bitmap> undoStack = new Stack<Bitmap>(); 
-    private Button btnSaveThis = new Button { Text = "Save Next", Dock = DockStyle.Bottom, Height = 30, Width = 20, AutoSize = true};
-    private Button btnDraw = new Button { Text = "Draw", Dock = DockStyle.Left, Height = 30, Width = 20};
-    private Button btnEraser = new Button { Text = "Eraser ( E )", Dock = DockStyle.Left, Height = 30, Width = 20};
-    private Button btnIncreasePenSize = new Button { Text = "+", Dock = DockStyle.Right, Height = 30, Width = 20};
-    private Button btnDecreasePenSize = new Button { Text = "-", Dock = DockStyle.Right, Height = 30, Width = 20};
+    private Button btnSaveThis = new Button { Text = "Save Next", Dock = DockStyle.Bottom, BackColor = Color.White };
+    private Button btnDraw = new Button {Text = "Pen", Dock = DockStyle.Left, Width = 20, Height = 20, BackColor = Color.White};
+    private Button btnEraser = new Button {Text = "Eraser", Dock = DockStyle.Left, Width = 20, Height = 20, BackColor = Color.White};
+    private Button btnIncreasePenSize = new Button {Text = "+", Dock = DockStyle.Right, Width = 20, Height = 20, BackColor = Color.White};
+    private Button btnDecreasePenSize = new Button {Text = "-", Dock = DockStyle.Right, Width = 20, Height = 20, BackColor = Color.White};
     private TextBox txb = new TextBox
     {
         Dock = DockStyle.Top,
         Multiline = true,
-        Height = 200,
-        Font = new Font("Roboto", 46),
+        Height = 150,
+        Font = new Font("Roboto", 42),
     };
 
     public WhiteBoard()
@@ -57,31 +58,42 @@ public partial class WhiteBoard : Form
 
         this.btnDraw.Click += (sender, e) =>
         {
+            MessageBox.Show("tá lápis");
             eraserMode = false;
             brush = new SolidBrush(Color.Black);
         };
 
         this.btnEraser.Click += (sender, e) =>
         {
+            MessageBox.Show("tá borracha");
             eraserMode = true;
             brush = new SolidBrush(Color.White);
         };
 
         this.btnIncreasePenSize.Click += (sender, e) =>
         {
-            penSize++;
+            if (penSize < 45)
+                penSize += 5;
+            else 
+                MessageBox.Show("Limite máximo da espessura da caneta atingido");
         };
 
         this.btnDecreasePenSize.Click += (sender, e) =>
         {
-            if (penSize > 1)
-                penSize--;
+            if (penSize > 6)
+                penSize-= 5;
+            else 
+                MessageBox.Show("Limite mínimo da espessura da caneta atingido");
+                return;
         };
  
         this.pb.MouseDown += (sender, e) =>
         {
+            
+
             if (e.Button == MouseButtons.Left)
             {
+                AddStateToUndoStack();
                 drawing = true;
                 previousPoint = e.Location;
             }
@@ -116,7 +128,6 @@ public partial class WhiteBoard : Form
             }
         };
 
-
         Text = "Testing...";
     }
 
@@ -129,6 +140,7 @@ public partial class WhiteBoard : Form
         this.g.Clear(Color.White);
         this.pb.Image = b;
         this.t.Start();
+        AddObject(new ButtonScreen("teste", pb.Width/2, pb.Height/2,"obj.png"));
     }
 
     private void KeyboardDown(object sender, KeyEventArgs e)
@@ -138,7 +150,7 @@ public partial class WhiteBoard : Form
             case Keys.Escape:
                 Application.Exit();
                 break;
-            case Keys.ControlKey:
+            case Keys.P:
                 DownloadNextFrame();
                 break;
         }
@@ -147,13 +159,34 @@ public partial class WhiteBoard : Form
             {
                 eraserMode = !eraserMode;
                 this.brush = eraserMode ? new SolidBrush(Color.White) : new SolidBrush(Color.Black);
-                // MessageBox.Show();
             }
 
         if (e.KeyCode == Keys.Up)
             penSize ++;
         if (e.KeyCode == Keys.Down)
             penSize --;
+
+        if (e.KeyCode == Keys.ControlKey && e.KeyCode == Keys.Z)
+            CtrlZ();
+    }
+
+    private void AddStateToUndoStack()
+    {
+        Bitmap crrState = new Bitmap(this.b);
+        undoStack.Push(crrState);
+    }
+
+    private void CtrlZ()
+    {
+        if (undoStack.Count > 0)
+        {
+            b = undoStack.Pop();
+            g = Graphics.FromImage(this.b);
+            pb.Image = b;
+            pb.Refresh();
+        }
+        else 
+            MessageBox.Show("Ação Impossível");
     }
 
     private void DownloadNextFrame()

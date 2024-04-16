@@ -12,3 +12,6 @@ C:\Users\disrct\Desktop\NNALI\Winforms\obj\Debug\net7.0-windows\refint\Winforms.
 C:\Users\disrct\Desktop\NNALI\Winforms\obj\Debug\net7.0-windows\Winforms.pdb
 C:\Users\disrct\Desktop\NNALI\Winforms\obj\Debug\net7.0-windows\Winforms.genruntimeconfig.cache
 C:\Users\disrct\Desktop\NNALI\Winforms\obj\Debug\net7.0-windows\ref\Winforms.dll
+C:\Users\disrct\Desktop\NNALI\Winforms\bin\Debug\net7.0-windows\Python.Runtime.dll
+C:\Users\disrct\Desktop\NNALI\Winforms\obj\Debug\net7.0-windows\Winforms.csproj.AssemblyReference.cache
+C:\Users\disrct\Desktop\NNALI\Winforms\obj\Debug\net7.0-windows\Winforms.csproj.CopyComplete
