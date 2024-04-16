@@ -1,4 +1,3 @@
-from datetime import datetime
 import hashlib
 import os
 import cv2 as cv
@@ -17,7 +16,6 @@ def get_folders(path):
     -------
     list
         A list of paths for all folders within the specified directory.
-
     """
     folders = []
     items = os.listdir(path)
@@ -27,7 +25,9 @@ def get_folders(path):
     return folders
 
 
-def process_images_in_directory(process_function: callable, source_directory: str, target_directory: str):
+def process_images_in_directory(
+    process_function: callable, source_directory: str, target_directory: str
+):
     """
     Process all images in a source directory using a specified processing function
     and save the processed images to a target directory.
@@ -40,18 +40,80 @@ def process_images_in_directory(process_function: callable, source_directory: st
         The directory containing the original images.
     target_directory : str
         The directory where the processed images will be saved.
-        
     """
     for image_file in os.listdir(source_directory):
         source_filepath = os.path.join(source_directory, image_file)
         image = cv.imread(source_filepath)
-        image_bytes = cv.imencode('.jpg', image)[1].tobytes()
-        target_filepath = os.path.join(target_directory, f"{hash(image_bytes)}.jpg")
+        target_filepath = generate_hashed_filename(image, target_directory)
         processed_image = process_function(image)
         if not cv.imwrite(target_filepath, processed_image):
-            print("False: ", source_filepath)
+            print("Failed to write image:", source_filepath)
+
+
+def generate_hashed_filename(img, target_directory):
+    """
+    Generate a hashed filename for an image based on its content.
+
+    Parameters
+    ----------
+    img : numpy.ndarray
+        The image data.
+    target_directory : str
+        The directory where the hashed filename will be saved.
+
+    Returns
+    -------
+    str
+        The hashed filename.
+    """
+    image_bytes = cv.imencode(".jpg", img)[1].tobytes()
+    target_filepath = os.path.join(
+        target_directory, f"{generate_hash(image_bytes)}.jpg"
+    )
+    return target_filepath
+
 
 def generate_hash(data):
+    """
+    Generate an MD5 hash from input data.
+
+    Parameters
+    ----------
+    data : bytes
+        The data to be hashed.
+
+    Returns
+    -------
+    str
+        The hexadecimal representation of the MD5 hash.
+    """
     hash_object = hashlib.md5(data)
     return hash_object.hexdigest()
-        
+
+import os
+
+
+def create_image_directories(base_dir):
+    """
+    Create directories for digits, uppercase letters, and lowercase letters (followed by '2').
+
+    Parameters
+    ----------
+    base_dir : str
+        The base directory where the subdirectories will be created.
+
+    Returns
+    -------
+    None
+    """
+    digits = [str(i) for i in range(10)]
+    letters_uppercase = [chr(i) for i in range(65, 91)]
+
+    for directory in digits + letters_uppercase:
+        dir_path = os.path.join(base_dir, directory)
+        os.makedirs(dir_path, exist_ok=True)
+
+    for letter in letters_uppercase:
+        dir_path = os.path.join(base_dir, letter + '2')
+        os.makedirs(dir_path, exist_ok=True)
+

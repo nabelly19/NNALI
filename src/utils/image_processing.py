@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 import cv2 as cv
 import numpy as np
-
+from .data_processing import *
 
 def show(img):
     """
@@ -11,7 +11,6 @@ def show(img):
     ----------
     img : array_like
         The image to be displayed.
-
     """
     plt.imshow(img, cmap="gray")
     plt.show()
@@ -80,10 +79,7 @@ def dilate_image(img, kernel_size=(43, 43)):
     return dilated_img
 
 
-import cv2 as cv
-
-
-def resize_image(img, new_size=(120, 90)):
+def resize_image(img, new_size=(90, 120)):
     """
     Resize an image to a new size.
 
@@ -92,7 +88,7 @@ def resize_image(img, new_size=(120, 90)):
     img : numpy.ndarray
         The input image.
     new_size : tuple, optional
-        The new size to resize the image to (default is (128, 128)).
+        The new size to resize the image to (default is (90, 120)).
 
     Returns
     -------
@@ -130,7 +126,7 @@ def flood_fill(img, x, y):
         return None
 
     queue = [(x, y)]
-    visited = []
+    visited = set()
 
     while queue:
         curr_x, curr_y = queue.pop()
@@ -141,9 +137,9 @@ def flood_fill(img, x, y):
         if (curr_x, curr_y) in visited:
             continue
 
-        visited.append((curr_x, curr_y))
+        visited.add((curr_x, curr_y))
 
-        if color != img[curr_y][curr_x]:
+        if img[curr_y][curr_x] != color:
             continue
 
         x0 = min(x0, curr_x)
@@ -159,3 +155,65 @@ def flood_fill(img, x, y):
 
     return ((x0, y0), (xf, yf))
 
+
+def find_background_color(img):
+    """
+    Find the background color in a binary image.
+
+    Parameters
+    ----------
+    img : numpy.ndarray
+        The binary image.
+
+    Returns
+    -------
+    int
+        The background color value (0 for black, 255 for white).
+    """
+    num_white_pixels = np.sum(img == 255)
+    num_black_pixels = np.sum(img == 0)
+
+    if num_white_pixels > num_black_pixels:
+        background_color = 255
+    else:
+        background_color = 0
+
+    return background_color
+
+
+def crop(square, img):
+    """
+    Crop an image using the specified square coordinates.
+
+    Parameters
+    ----------
+    square : tuple
+        A tuple containing the coordinates of the top-left and bottom-right corners of the square.
+    img : numpy.ndarray
+        The input image.
+
+    Returns
+    -------
+    numpy.ndarray
+        The cropped image.
+    """
+    return img[square[0][1] : square[1][1], square[0][0] : square[1][0]]
+
+def save_images(imgs, target_directory):
+    """
+    Save a list of images to a target directory.
+
+    Parameters
+    ----------
+    imgs : list
+        A list of images to be saved.
+    target_directory : str
+        The directory where the images will be saved.
+    """
+    for img in imgs:
+        target_filepath = generate_hashed_filename(img, target_directory)
+        if not cv.imwrite(target_filepath, img):
+            print("Failed to save image.")
+
+def invert_mask(img):
+    return cv.bitwise_not(img)
