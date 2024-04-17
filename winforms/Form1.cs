@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Windows.Forms;
 
 public partial class WhiteBoard : Form
@@ -207,5 +209,41 @@ public partial class WhiteBoard : Form
         string printName = $"FPS_{frameCounter}.png";
         print.Save(printName, System.Drawing.Imaging.ImageFormat.Png);
         frameCounter++;
+        run_cmd();
     }
+
+    private List<string> run_cmd(
+            string cmd = "C:/Program Files/Python311/python.exe",
+            string scriptPath = "C:/Users/disrct/Desktop/nnali/run.py"
+        )
+        {
+            List<string> outputLines = new List<string>();
+
+            ProcessStartInfo start = new();
+            start.FileName = cmd;
+
+            string args = $"{scriptPath}";
+            start.Arguments = args;
+
+            MessageBox.Show(args);
+            start.UseShellExecute = false;
+            start.RedirectStandardOutput = true;
+
+            using (Process process = Process.Start(start))
+            {
+                using (StreamReader reader = process.StandardOutput)
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        outputLines.Add(line);
+                    }
+                }
+            }
+
+            foreach (string line in outputLines)
+                MessageBox.Show(line.ToString());
+
+            return outputLines;
+        }
 }

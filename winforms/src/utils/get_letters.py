@@ -2,7 +2,7 @@ from .image_processing import *
 import cv2 as cv
 
 
-def get_letters(img):
+def get_letters(filename):
     """
     Extract individual letters from an image.
 
@@ -17,8 +17,9 @@ def get_letters(img):
         A list of cropped images containing individual letters.
     """
     images_bordered = []
-    image = img.copy()
+    image = cv.imread(filename)
     image = binary(image)
+
     background_color = find_background_color(image)
 
     squares = []
@@ -34,7 +35,7 @@ def get_letters(img):
     squares = remove_noise(squares)
     squares = organize_letters(squares)
 
-    image = img.copy()
+    image = cv.imread(filename)
     if background_color == 0:
         image = invert_mask(image)
         background_color = 255

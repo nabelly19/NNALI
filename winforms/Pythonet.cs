@@ -22,12 +22,11 @@ public class Pythonet
         {
             Runtime.PythonDLL = _pythonDLLPath;
             PythonEngine.Initialize();
-            Predict();
         }
 
         catch (PythonException ex)
         {
-            System.Console.WriteLine("Erro ao executar o arquivo Python" + ex.Message);
+            MessageBox.Show("Erro ao executar o arquivo Python" + ex.Message);
         }
         finally
         {
@@ -41,16 +40,15 @@ public class Pythonet
         {
             dynamic tf = Py.Import("tensorflow");
             dynamic np = Py.Import("numpy");
-            dynamic model = tf.keras.models.load_model("modelao");
-            dynamic list = new PyList();
-            list.append(tf.keras.utils.load_img("imagemteste"));
-            dynamic data = np.array(list);
-            dynamic result = model.predict(data);
-            Console.WriteLine(result);
+            dynamic predictModule = Py.Import("src\\predict.py");
+
+            dynamic model = tf.keras.models.load_model(this._modelName);
+            string result = predictModule.run("winforms\\FPS_0.png", model);
+            MessageBox.Show(result);
         }
         catch (PythonException ex)
         {
-            System.Console.WriteLine("Falha ao tentar executar o modelo" + ex.Message);
+            MessageBox.Show("Falha ao tentar executar o modelo" + ex.Message);
         }
     }
 }

@@ -78,8 +78,8 @@ def get_word(imgs, model):
         word.append(answer[np.argmax(predict(img, model))])
     return word
 
-def run(img, model, save=False):
-    letters = get_letters(img)
+def run(filename, model, save=False):
+    letters = get_letters(filename)
     for i in range(len(letters)):
         letters[i] = resize_image(letters[i])
         show(letters[i])
