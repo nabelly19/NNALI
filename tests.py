@@ -1,24 +1,15 @@
+import src.predict as predict
+from tensorflow.keras import models
 
 from src.utils import *
 
-# path = "data\\filters" 
-# folders = get_folders(path)
+model_path = "neuralnet\checkpoints\good_model\model9292(95ms).keras"
+model = models.load_model(model_path)
+# print(predict.run("data\\teste2.png", model))
+# print(predict.run("data\\teste.png", model))
+# print(predict.run("data\inquisicao_crop_edit.png", model, save=True))
+print(predict.run(cv.imread("data\inquisicao_crop.png"), model, save=True))
 
-# array = []
-
-# for folder in folders:
-#     print(folder)
-#     count = 0
-#     for image_file in os.listdir(folder):
-#         source_filepath = os.path.join(folder, image_file)
-#         # print(source_filepath)
-#         image = cv.imread(source_filepath)
-#         # print(cv.imwrite(".png",image))
-#         count += 1
-#     array.append(folder + " | "+ str(count))
-
-# print (array)
-
-
-image = cv.imread("data\\filters\\0\-73854686951403631.jpg")
-show(resize_image(image))
+# image = cv.imread("data\inquisicao_crop_edit.png")
+# image = binary(image)
+# show(image)

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\disrct\\Desktop\\NNALI\\Winforms\\Winforms.csproj": {}
+    "C:\\Users\\disrct\\Desktop\\NNALI-help\\winforms\\Winforms.csproj": {}
   },
   "projects": {
-    "C:\\Users\\disrct\\Desktop\\NNALI\\Winforms\\Winforms.csproj": {
+    "C:\\Users\\disrct\\Desktop\\NNALI-help\\winforms\\Winforms.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\disrct\\Desktop\\NNALI\\Winforms\\Winforms.csproj",
+        "projectUniqueName": "C:\\Users\\disrct\\Desktop\\NNALI-help\\winforms\\Winforms.csproj",
         "projectName": "Winforms",
-        "projectPath": "C:\\Users\\disrct\\Desktop\\NNALI\\Winforms\\Winforms.csproj",
+        "projectPath": "C:\\Users\\disrct\\Desktop\\NNALI-help\\winforms\\Winforms.csproj",
         "packagesPath": "C:\\Users\\disrct\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\disrct\\Desktop\\NNALI\\Winforms\\obj\\",
+        "outputPath": "C:\\Users\\disrct\\Desktop\\NNALI-help\\winforms\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\disrct\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -38,6 +38,10 @@
         "net7.0-windows7.0": {
           "targetAlias": "net7.0-windows",
           "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "pythonnet": {
               "target": "Package",
               "version": "[3.0.3, )"

@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "Y8s4J/0jWYcBwKbWwfTwuFYjopITvbZ9HdLcQZIS5/aTkEqk6cep+vyQtCUulTAC1pcCNiG2AZTNcJUU6fYYBw==",
+  "dgSpecHash": "KRklG6siqqqcs57Og9Rp4hmH22XS5p7e2ng0tfz2ZaIH+piD/7m44DAjmqpL/Y53YrTZgza2mqYI0J8hbdEnKg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\disrct\\Desktop\\NNALI\\Winforms\\Winforms.csproj",
+  "projectFilePath": "C:\\Users\\disrct\\Desktop\\NNALI-help\\winforms\\Winforms.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\disrct\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\disrct\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\disrct\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
+    "C:\\Users\\disrct\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\disrct\\.nuget\\packages\\pythonnet\\3.0.3\\pythonnet.3.0.3.nupkg.sha512",
     "C:\\Users\\disrct\\.nuget\\packages\\system.io\\4.3.0\\system.io.4.3.0.nupkg.sha512",
     "C:\\Users\\disrct\\.nuget\\packages\\system.reflection\\4.3.0\\system.reflection.4.3.0.nupkg.sha512",
